@@ -1,6 +1,6 @@
 #include <iostream>
 
-int main() {
+int main(){
 
   int one = 0;
   int two = 0;
