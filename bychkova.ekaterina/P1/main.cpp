@@ -63,7 +63,7 @@ int main() {
     std::cout << max_len << std::endl;
 
     if (cout == 1) {
-        std::cerr << "Error: нельзя рассчитать характеристику смены знака, нужно хотя бы 2 элемента." << std::endl;
+        std::cerr << "Error: нельзя рассчитать характеристику смены знака." << std::endl;
         return 2;
     }
 
