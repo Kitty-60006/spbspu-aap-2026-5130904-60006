@@ -55,7 +55,7 @@ int main(){
   }
 
   if (cout == 0) {
-    std::cerr << "Error: нельзя рассчитать ни одну характеристику."
+    std::cerr << "Error: No characteristic can be calculated."
               << std::endl;
     return 2;
   }
@@ -63,7 +63,7 @@ int main(){
   std::cout << max_len << std::endl;
 
   if (cout == 1) {
-    std::cerr << "Error: нельзя рассчитать характеристику смены знака."
+    std::cerr << "Error: The sign change characteristic cannot be calculated."
               << std::endl;
     return 2;
   }
