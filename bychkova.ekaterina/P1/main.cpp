@@ -1,7 +1,7 @@
 #include <iostream>
 
-int main()
-{
+int main(){
+
     int one = 0;
     int two = 0;
     int cout = 0;
@@ -55,14 +55,16 @@ int main()
     }
 
     if (cout == 0) {
-        std::cerr << "Error: No characteristic can be calculated." << std::endl;
+        std::cerr << "Error: No characteristic can be calculated."
+                  << std::endl;
         return 2;
     }
 
     std::cout << max_len << std::endl;
 
     if (cout == 1) {
-        std::cerr << "Error: The sign change characteristic cannot be calculated." << std::endl;
+        std::cerr << "Error: The sign change characteristic cannot be calculated."
+                  << std::endl;
         return 2;
     }
 
