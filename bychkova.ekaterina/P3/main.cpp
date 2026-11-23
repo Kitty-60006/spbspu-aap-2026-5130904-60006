@@ -1,4 +1,5 @@
 #include <cstddef>
+#include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -71,56 +72,64 @@ std::size_t noOneOdinackStrok(std::size_t n, std::size_t m, const int matrix[])
   return row_count;
 }
 
+bool readMatrix(std::istream & input, std::size_t & n, std::size_t & m, std::vector< int > & matrix)
+{
+  if (!(input >> n >> m)) {
+    return false;
+  }
+
+  const std::size_t count = n * m;
+  matrix.resize(count);
+  for (std::size_t i = 0; i < count; i++) {
+    if (!(input >> matrix[i])) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+void writeResult(std::ostream & output, std::size_t n, std::size_t m, const std::vector< int > & source,
+                 const std::vector< int > & result)
+{
+  output << n << ' ' << m;
+  for (std::size_t i = 0; i < n * m; i++) {
+    output << ' ' << result[i];
+  }
+  output << '\n';
+  output << noOneOdinackStrok(n, m, source.data()) << '\n';
+}
+
 int main(int argc, char *argv[])
 {
-  bool print_spiral = true;
-  bool print_count = true;
+  if (argc != 4) {
+    return 1;
+  }
 
-  if (argc > 1) {
-    const std::string task = argv[1];
-    if (task == "4" || task == "LFT-BOT-CLK" || task == "lft-bot-clk") {
-      print_count = false;
-    } else if (task == "10" || task == "CNT-ROW-NSM" || task == "cnt-row-nsm") {
-      print_spiral = false;
-    }
+  const std::string mode = argv[1];
+  if (mode != "1" && mode != "2") {
+    return 1;
+  }
+
+  std::ifstream input(argv[2]);
+  std::ofstream output(argv[3]);
+  if (!input || !output) {
+    return 1;
   }
 
   std::size_t n = 0;
   std::size_t m = 0;
-  if (!(std::cin >> n >> m)) {
+  std::vector< int > source;
+  std::vector< int > result;
+
+  if (!readMatrix(input, n, m, source)) {
     return 1;
   }
 
-  const std::size_t count = n * m;
-  std::vector< int > a(count);
-  std::vector< int > b(count);
+  result = source;
+  umenshElementov(n, m, result.data());
 
-  for (std::size_t i = 0; i < count; i++) {
-    if (!(std::cin >> a[i])) {
-      return 1;
-    }
-    b[i] = a[i];
-  }
+  writeResult(output, n, m, source, result);
 
-  umenshElementov(n, m, b.data());
-
-  if (print_spiral) {
-    std::cout << n << ' ' << m;
-    for (std::size_t i = 0; i < count; i++) {
-      std::cout << ' ' << b[i];
-    }
-    std::cout << '\n';
-    if (std::cout.fail()) {
-      return 1;
-    }
-  }
-
-  if (print_count) {
-    std::cout << noOneOdinackStrok(n, m, a.data()) << '\n';
-    if (std::cout.fail()) {
-      return 1;
-    }
-  }
-
-  return 0;
+  return output.good() ? 0 : 1;
 }
