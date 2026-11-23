@@ -1,5 +1,6 @@
 #include <cstddef>
 #include <iostream>
+#include <vector>
 
 void umenshElementov(std::size_t n, std::size_t m, int matrix[])
 {
@@ -71,40 +72,38 @@ std::size_t noOneOdinackStrok(std::size_t n, std::size_t m, const int matrix[])
 
 int main()
 {
-  const std::size_t MAX_SIZE = 10000;
   std::size_t n = 0;
   std::size_t m = 0;
-  std::cin >> n >> m;
-  if (std::cin.fail()) {
+  if (!(std::cin >> n >> m)) {
     return 1;
   }
 
   const std::size_t count = n * m;
-  int a[MAX_SIZE] = {};
-  int b[MAX_SIZE] = {};
+  std::vector< int > a(count);
+  std::vector< int > b(count);
 
   for (std::size_t i = 0; i < count; i++) {
-    std::cin >> a[i];
-    if (std::cin.fail()) {
+    if (!(std::cin >> a[i])) {
       return 1;
     }
     b[i] = a[i];
   }
 
-  umenshElementov(n, m, b);
+  umenshElementov(n, m, b.data());
 
   std::cout << n << ' ' << m;
   for (std::size_t i = 0; i < count; i++) {
     std::cout << ' ' << b[i];
   }
-  std::cout << std::endl;
+  std::cout << '\n';
   if (std::cout.fail()) {
     return 1;
   }
 
-  std::cout << noOneOdinackStrok(n, m, a) << std::endl;
+  std::cout << noOneOdinackStrok(n, m, a.data()) << '\n';
   if (std::cout.fail()) {
     return 1;
   }
+
   return 0;
 }
