@@ -1,5 +1,6 @@
 #include <cstddef>
 #include <iostream>
+#include <string>
 #include <vector>
 
 void umenshElementov(std::size_t n, std::size_t m, int matrix[])
@@ -70,8 +71,20 @@ std::size_t noOneOdinackStrok(std::size_t n, std::size_t m, const int matrix[])
   return row_count;
 }
 
-int main()
+int main(int argc, char *argv[])
 {
+  bool print_spiral = true;
+  bool print_count = true;
+
+  if (argc > 1) {
+    const std::string task = argv[1];
+    if (task == "4" || task == "LFT-BOT-CLK" || task == "lft-bot-clk") {
+      print_count = false;
+    } else if (task == "10" || task == "CNT-ROW-NSM" || task == "cnt-row-nsm") {
+      print_spiral = false;
+    }
+  }
+
   std::size_t n = 0;
   std::size_t m = 0;
   if (!(std::cin >> n >> m)) {
@@ -91,18 +104,22 @@ int main()
 
   umenshElementov(n, m, b.data());
 
-  std::cout << n << ' ' << m;
-  for (std::size_t i = 0; i < count; i++) {
-    std::cout << ' ' << b[i];
-  }
-  std::cout << '\n';
-  if (std::cout.fail()) {
-    return 1;
+  if (print_spiral) {
+    std::cout << n << ' ' << m;
+    for (std::size_t i = 0; i < count; i++) {
+      std::cout << ' ' << b[i];
+    }
+    std::cout << '\n';
+    if (std::cout.fail()) {
+      return 1;
+    }
   }
 
-  std::cout << noOneOdinackStrok(n, m, a.data()) << '\n';
-  if (std::cout.fail()) {
-    return 1;
+  if (print_count) {
+    std::cout << noOneOdinackStrok(n, m, a.data()) << '\n';
+    if (std::cout.fail()) {
+      return 1;
+    }
   }
 
   return 0;
