@@ -1,15 +1,28 @@
 #include <iostream>
-using namespace std;
+#include <vector>
 
 int main()
 {
-  int n, m;
-  cin >> n >> m;
-  int a[10000];
-  int b[10000];
+  int n = 0;
+  int m = 0;
+  if (!(std::cin >> n >> m) || n < 0 || m < 0) {
+    return 0;
+  }
 
-  for (int i = 0; i < n * m; i++) {
-    cin >> a[i];
+  if (n == 0 || m == 0) {
+    std::cout << n << ' ' << m << '\n' << 0 << '\n';
+    return 0;
+  }
+
+  const int count = n * m;
+  std::vector<int> a(count);
+  std::vector<int> b(count);
+
+  std::cout << n << ' ' << m << ' ';
+  for (int i = 0; i < count; i++) {
+    if (!(std::cin >> a[i])) {
+      return 0;
+    }
     b[i] = a[i];
   }
 
@@ -20,7 +33,7 @@ int main()
   int k = 1;
 
   while (top <= bottom && left <= right) {
-    for (int i = bottom; i >= top; i--) {
+    for (int i = bottom; i >= top; i = i - 1) {
       b[i * m + left] -= k++;
     }
     left++;
@@ -39,39 +52,36 @@ int main()
     for (int i = top; i <= bottom; i++) {
       b[i * m + right] -= k++;
     }
-    right--;
+    right = right - 1;
     if (left > right) {
       break;
     }
 
-    for (int j = right; j >= left; j--) {
+    for (int j = right; j >= left; j = j - 1) {
       b[bottom * m + j] -= k++;
     }
-    bottom--;
+    bottom = bottom - 1;
   }
 
-  for (int i = 0; i < n * m; i++) {
-    cout << b[i] << " ";
+  for (int i = 0; i < count; i++) {
+    std::cout << b[i] << ' ';
   }
-  cout << endl;
+  std::cout << '\n';
 
-  int count = 0;
-
+  int row_count = 0;
   for (int i = 0; i < n; i++) {
-    bool good = true;
-
+    bool odinack_znach = true;
     for (int j = 1; j < m; j++) {
       if (a[i * m + j] == a[i * m + j - 1]) {
-        good = false;
+        odinack_znach = false;
         break;
       }
     }
-
-    if (good) {
-      count++;
+    if (odinack_znach) {
+      row_count++;
     }
   }
 
-  cout << count << endl;
+  std::cout << row_count << '\n';
   return 0;
 }
