@@ -72,7 +72,7 @@ std::size_t noOneOdinackStrok(std::size_t n, std::size_t m, const int matrix[])
   return row_count;
 }
 
-bool readMatrix(std::istream & input, std::size_t & n, std::size_t & m, std::vector< int > & matrix)
+bool readMatrix(std::istream &input, std::size_t &n, std::size_t &m, std::vector< int > &matrix)
 {
   if (!(input >> n >> m)) {
     return false;
@@ -89,8 +89,8 @@ bool readMatrix(std::istream & input, std::size_t & n, std::size_t & m, std::vec
   return true;
 }
 
-void writeResult(std::ostream & output, std::size_t n, std::size_t m, const std::vector< int > & source,
-                 const std::vector< int > & result)
+void writeResult(std::ostream &output, std::size_t n, std::size_t m, const std::vector< int > &source,
+    const std::vector< int > &result)
 {
   output << n << ' ' << m;
   for (std::size_t i = 0; i < n * m; i++) {
