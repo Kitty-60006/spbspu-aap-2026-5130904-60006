@@ -1,31 +1,7 @@
 #include <iostream>
-#include <vector>
 
-int main()
+void umensh_elementov(int n, int m, int matrix[])
 {
-  int n = 0;
-  int m = 0;
-  if (!(std::cin >> n >> m) || n < 0 || m < 0) {
-    return 0;
-  }
-
-  if (n == 0 || m == 0) {
-    std::cout << n << ' ' << m << '\n' << 0 << '\n';
-    return 0;
-  }
-
-  const int count = n * m;
-  std::vector<int> a(count);
-  std::vector<int> b(count);
-
-  std::cout << n << ' ' << m << ' ';
-  for (int i = 0; i < count; i++) {
-    if (!(std::cin >> a[i])) {
-      return 0;
-    }
-    b[i] = a[i];
-  }
-
   int top = 0;
   int bottom = n - 1;
   int left = 0;
@@ -34,7 +10,8 @@ int main()
 
   while (top <= bottom && left <= right) {
     for (int i = bottom; i >= top; i = i - 1) {
-      b[i * m + left] -= k++;
+      matrix[i * m + left] = matrix[i * m + left] - k;
+      k++;
     }
     left++;
     if (left > right) {
@@ -42,7 +19,8 @@ int main()
     }
 
     for (int j = left; j <= right; j++) {
-      b[top * m + j] -= k++;
+      matrix[top * m + j] = matrix[top * m + j] - k;
+      k++;
     }
     top++;
     if (top > bottom) {
@@ -50,7 +28,8 @@ int main()
     }
 
     for (int i = top; i <= bottom; i++) {
-      b[i * m + right] -= k++;
+      matrix[i * m + right] = matrix[i * m + right] - k;
+      k++;
     }
     right = right - 1;
     if (left > right) {
@@ -58,21 +37,21 @@ int main()
     }
 
     for (int j = right; j >= left; j = j - 1) {
-      b[bottom * m + j] -= k++;
+      matrix[bottom * m + j] = matrix[bottom * m + j] - k;
+      k++;
     }
     bottom = bottom - 1;
   }
+}
 
-  for (int i = 0; i < count; i++) {
-    std::cout << b[i] << ' ';
-  }
-  std::cout << '\n';
-
+int no_one_odinack_strok(int n, int m, int matrix[])
+{
   int row_count = 0;
+
   for (int i = 0; i < n; i++) {
     bool odinack_znach = true;
     for (int j = 1; j < m; j++) {
-      if (a[i * m + j] == a[i * m + j - 1]) {
+      if (matrix[i * m + j] == matrix[i * m + j - 1]) {
         odinack_znach = false;
         break;
       }
@@ -82,6 +61,33 @@ int main()
     }
   }
 
-  std::cout << row_count << '\n';
+  return row_count;
+}
+
+int main()
+{
+  const int MAX_SIZE = 10000;
+  int n = 0;
+  int m = 0;
+  std::cin >> n >> m;
+
+  const int count = n * m;
+  int a[MAX_SIZE] = {};
+  int b[MAX_SIZE] = {};
+
+  for (int i = 0; i < count; i++) {
+    std::cin >> a[i];
+    b[i] = a[i];
+  }
+
+  umensh_elementov(n, m, b);
+
+  std::cout << n << ' ' << m;
+  for (int i = 0; i < count; i++) {
+    std::cout << ' ' << b[i];
+  }
+  std::cout << std::endl;
+
+  std::cout << no_one_odinack_strok(n, m, a) << std::endl;
   return 0;
 }
