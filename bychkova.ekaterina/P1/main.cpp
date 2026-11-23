@@ -1,70 +1,77 @@
 #include <iostream>
-#include <limits>
-
-namespace bychkova {
-  constexpr int inputErrorCode = 1;
-  constexpr int errorSum = 2;
-}
+using namespace std;
 
 int main()
 {
-  int current_value = 0;
-  int previous_value = 0;
-  int last_non_zero = 0;
+  int n, m;
+  cin >> n >> m;
+  int a[10000];
+  int b[10000];
 
-  std::size_t current_run_length = 0;
-  std::size_t max_run_length = 0;
-  std::size_t sign_changes = 0;
-  bool run_length_error = false;
-  bool sign_changes_error = false;
+  for (int i = 0; i < n * m; i++) {
+    cin >> a[i];
+    b[i] = a[i];
+  }
 
-  while (std::cin >> current_value && current_value != 0) {
-    if (current_value >= previous_value) {
-      if (current_run_length == std::numeric_limits< std::size_t >::max()) {
-        run_length_error = true;
-      } else {
-        ++current_run_length;
+  int top = 0;
+  int bottom = n - 1;
+  int left = 0;
+  int right = m - 1;
+  int k = 1;
+
+  while (top <= bottom && left <= right) {
+    for (int i = bottom; i >= top; i--) {
+      b[i * m + left] -= k++;
+    }
+    left++;
+    if (left > right) {
+      break;
+    }
+
+    for (int j = left; j <= right; j++) {
+      b[top * m + j] -= k++;
+    }
+    top++;
+    if (top > bottom) {
+      break;
+    }
+
+    for (int i = top; i <= bottom; i++) {
+      b[i * m + right] -= k++;
+    }
+    right--;
+    if (left > right) {
+      break;
+    }
+
+    for (int j = right; j >= left; j--) {
+      b[bottom * m + j] -= k++;
+    }
+    bottom--;
+  }
+
+  for (int i = 0; i < n * m; i++) {
+    cout << b[i] << " ";
+  }
+  cout << endl;
+
+  int count = 0;
+
+  for (int i = 0; i < n; i++) {
+    bool good = true;
+
+    for (int j = 1; j < m; j++) {
+      if (a[i * m + j] == a[i * m + j - 1]) {
+        good = false;
+        break;
       }
-    } else {
-      current_run_length = 1;
     }
 
-    if (current_run_length > max_run_length) {
-      max_run_length = current_run_length;
+    if (good) {
+      count++;
     }
-
-    if (last_non_zero != 0 && ((last_non_zero < 0 && current_value > 0) || (last_non_zero > 0 && current_value < 0))) {
-      if (sign_changes == std::numeric_limits< std::size_t >::max()) {
-        sign_changes_error = true;
-      } else {
-        ++sign_changes;
-      }
-    }
-
-    previous_value = current_value;
-    last_non_zero = current_value;
   }
 
-  if (!std::cin) {
-    std::cerr << "Error: Invalid input data or missing zero terminator." << std::endl;
-    return bychkova::inputErrorCode;
-  }
-
-  if (run_length_error) {
-    std::cerr << "Error: Increasing fragment is too long." << std::endl;
-  } else {
-    std::cout << max_run_length << std::endl;
-  }
-
-  if (sign_changes_error) {
-    std::cerr << "Error: Too many sign changes." << std::endl;
-  } else {
-    std::cout << sign_changes << std::endl;
-  }
-
-  if (run_length_error || sign_changes_error) {
-    return bychkova::errorSum;
-  }
-
+  cout << count << endl;
   return 0;
 }
